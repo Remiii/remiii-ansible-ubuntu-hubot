@@ -244,6 +244,11 @@
     - name: Clean rights for myhubot directory
       file: path=/home/{{ user }}/documents/myhubot/ owner={{ user }} group={{ user }} recurse=yes
       sudo: true
+
+
+    ###
+    # Add Slack Adapater
+    ###
     - name: Install Slack Adapter
       shell: cd /home/{{ user }}/documents/myhubot && npm install hubot-slack --save
       args:
@@ -253,6 +258,13 @@
       file: path=/home/{{ user }}/documents/myhubot/ owner={{ user }} group={{ user }} recurse=yes
       sudo: true
 
+
+    ###
+    # Add Hubot scripts
+    ###
+    - name: Update scripts list
+      template: src={{ rootPath }}/skel/home/myuser/documents/myhubot/hubot-scripts.json.j2 dest=/home/{{ user }}/documents/myhubot/hubot-scripts.json owner={{ user }} group={{ user }}
+      sudo: true
 
     ###
     # Update supervisor Hubot

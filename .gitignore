@@ -2,4 +2,4 @@
 ansible_inventory_machinename
 vars/myConfig.yml
 vars/mySSHPublicKey.pub
-
+vars/myConfig.yml.bob
