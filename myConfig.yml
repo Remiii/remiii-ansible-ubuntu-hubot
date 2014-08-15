@@ -1,0 +1,279 @@
+- hosts: all
+
+
+  ###
+  # Tasks
+  ###
+  tasks:
+
+
+    ###
+    # Vars
+    ###
+    - name: Load vars from vars directory
+      include_vars: vars/myConfig.yml
+      sudo: true
+
+
+    ###
+    # Hostname
+    ###
+    - name: Update Hosts file with hostname
+      lineinfile: dest=/etc/hosts line="{{ publicIpAddress }} {{ hostname }}" backup=yes
+      sudo: true
+    - name: Update hostname to {{ hostname }}
+      hostname: name={{ hostname }}
+      sudo: true
+
+
+    ###
+    # Update APT
+    ###
+    - name: Update APT
+      apt: update_cache=yes
+      sudo: true
+
+
+    ###
+    # Time management
+    ###
+    - name: Install NTP (and update apt cache for the first install)
+      apt: name={{ item }} state=latest
+           update_cache=yes
+      with_items:
+        - ntp
+        - tzdata
+      sudo: true
+    - name: Set local timezone
+      copy: content={{ timezone }}
+            dest=/etc/timezone
+      sudo: true
+    - name: Start the ntp service
+      service: name=ntp state=started enabled=true
+      sudo: true
+
+
+    ###
+    # Add skel for all users
+    ###
+    - name: Add zshrc
+      template: src={{ rootPath }}/skel/etc/skel/.zshrc.j2 dest=/etc/skel/.zshrc owner=root group=root
+      sudo: true
+
+
+    ###
+    # MISC Tools
+    ###
+    - name: Install MISC tools
+      apt: name={{ item }} state=latest
+      with_items:
+        - language-pack-fr
+        - dnsutils
+        - iftop
+        - smartmontools
+        - iptraf
+        - sysstat
+        - vim
+        - htop
+        - git-core
+        - curl
+        - acl
+        - htop
+        - tig
+        - tmux
+        - screen
+        - zsh
+        - ncdu
+        - ifstat
+        - build-essential
+        - openssh-client
+        - ncdu
+        - tree
+      sudo: true
+
+
+    ###
+    # Create SSH user group
+    ###
+    - name: Create group sshuser
+      group: name=sshuser state=present
+      sudo: true
+    - name: Create group sshuserpwd
+      group: name=sshuserpwd state=present
+      sudo: true
+    - name: Create group sshuserkey
+      group: name=sshuserkey state=present
+      sudo: true
+
+
+    ###
+    # User Management
+    ###
+    - name: Add /usr/local/scripts directory
+      file: path=/usr/local/scripts state=directory owner=root group=root
+      sudo: true
+    - name: Add login script
+      template: src={{ rootPath }}/skel/usr/local/scripts/loginNotification.sh.j2 dest=/usr/local/scripts/loginNotification.sh owner=root group=root
+      sudo: true
+    - name: Change shell for current user
+      shell: chsh -s /bin/zsh
+      sudo: true
+    - name: Create group {{ user }}
+      group: name={{ user }} state=present
+      sudo: true
+    - name: Create user {{ user }}
+      user: name={{ user }}
+            comment="{{ user }} user"
+            shell=/bin/zsh
+            groups=sudo,adm,sshuser,sshuserpwd,{{ user }}
+      sudo: true
+    - name: Set up authorized_keys for {{ user }}
+      authorized_key: user={{ user }}
+                      key="{{ lookup('file', 'vars/mySSHPublicKey.pub') }}"
+      sudo: true
+
+
+    ###
+    # Security Tools
+    ###
+    - name: Install Security tools
+      apt: name={{ item }} state=latest
+      with_items:
+        - fail2ban
+      sudo: true
+    - name: Disable Root login (useless on Ubuntu but just in case ;-)
+      lineinfile: dest=/etc/ssh/sshd_config regexp='^PermitRootLogin' line='PermitRootLogin no' backup=yes
+      sudo: true
+    - name: Some security optim
+      lineinfile: dest=/etc/ssh/sshd_config line="Match User {{ user }}" backup=yes
+      sudo: true
+    - name: Some security optim
+      lineinfile: dest=/etc/ssh/sshd_config line="    PasswordAuthentication yes" backup=yes
+      sudo: true
+    - name: Some security optim
+      lineinfile: dest=/etc/ssh/sshd_config line="Match User ubuntu" backup=yes
+      sudo: true
+    - name: Some security optim
+      lineinfile: dest=/etc/ssh/sshd_config line="    PasswordAuthentication no" backup=yes
+      sudo: true
+    - name: Restart SSHd
+      service: name=ssh state=reloaded
+      sudo: true
+
+
+    ###
+    # Supervisor
+    ###
+    - name: Install Supervisor
+      apt: name=supervisor state=latest
+      sudo: true
+    - name: Start supervisor service
+      service: name=supervisor state=started enabled=true
+      sudo: true
+
+
+    ###
+    # Install Node+NPM
+    ###
+    - name: Install Node+NPM
+      apt: name={{ item }} state=latest
+      with_items:
+        - nodejs
+        - npm
+      sudo: true
+    - name: Add Node to the PATH
+      file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
+      sudo: true
+
+
+    ###
+    # Install Postfix
+    ###
+    - name: Install postfix
+      apt: name=postfix state=latest
+      sudo: true
+
+
+    ###
+    # Copy skell home
+    ###
+    - name: Add README.md file
+      template: src={{ rootPath }}/skel/home/myuser/README.md.j2 dest=/home/{{ user }}/README.md
+      sudo: true
+    - name: Add documents directory
+      file: path=/home/{{ user}}/documents/ state=directory owner={{ user }} group={{ user }}
+      sudo: true
+
+
+
+    ###################################################################################################
+    # HUBOT PART
+    ###################################################################################################
+
+
+    ###
+    # Install Redis
+    ###
+    - name: Install Redis
+      apt: name=redis-server state=latest
+      sudo: true
+
+
+    ###
+    # Install Coffee, Hubot and Hubot scripts
+    ###
+    - name: Install Node packages
+      npm: name={{ item }} global=yes state=latest
+      with_items:
+        - coffee-script
+        - hubot
+      sudo: true
+
+
+    ###
+    # Create my Hubot
+    ###
+    - name: Add myhubot directory
+      file: path=/home/{{ user}}/documents/myhubot state=directory owner={{ user }} group={{ user }}
+      sudo: true
+    - name: Create my Hubot
+      shell: hubot --create /home/{{ user }}/documents/myhubot
+      args:
+        creates: /home/{{ user }}/documents/myhubot/README.md
+      sudo: true
+    - name: Clean rights for myhubot directory
+      file: path=/home/{{ user }}/documents/myhubot/ owner={{ user }} group={{ user }} recurse=yes
+      sudo: true
+    - name: Install Slack Adapter
+      shell: cd /home/{{ user }}/documents/myhubot && npm install hubot-slack --save
+      args:
+        creates: /home/{{ user }}/documents/myhubot/node_modules/hubot-slack/README.md
+      sudo: true
+    - name: Clean rights for Slack Adapter
+      file: path=/home/{{ user }}/documents/myhubot/ owner={{ user }} group={{ user }} recurse=yes
+      sudo: true
+
+
+    ###
+    # Update supervisor Hubot
+    ###
+    - name: Add supervisor conf for Hubot
+      template: src={{ rootPath }}/skel/etc/supervisor/conf.d/supervisord.conf.j2 dest=/etc/supervisor/conf.d/supervisord.conf
+      sudo: true
+
+
+    ###################################################################################################
+
+
+
+    ###
+    # Restart Service
+    ###
+    - name: Restart SSHd
+      service: name=ssh state=restarted
+      sudo: true
+    - name: Restart supervisord
+      supervisorctl: name='hubot' state=restarted
+      sudo: true
+
+

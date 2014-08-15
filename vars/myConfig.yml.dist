@@ -1,0 +1,20 @@
+###
+# myConfig
+###
+rootPath: '~/git/project'
+hostname: 'django.server.mydomain.com'
+publicIpAddress: '123.123.123.123'
+trustedIp: '127.0.0.1 192.168.1.10'
+user: 'django'
+userPwd: 'azerty'
+timezone: 'Europe/Paris'
+sysadminEmail: 'sysadmin@mydomain.com'
+
+###
+# Hubot conf
+###
+
+HUBOT_SLACK_TOKEN: azertyazertyazerty
+HUBOT_SLACK_TEAM: myteam
+HUBOT_SLACK_BOTNAME: hubot
+

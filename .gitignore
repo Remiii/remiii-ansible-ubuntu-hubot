@@ -1,0 +1,5 @@
+.DS_Store
+ansible_inventory_machinename
+vars/myConfig.yml
+vars/mySSHPublicKey.pub
+
