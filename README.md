@@ -94,9 +94,9 @@ Sample command line for AmazonEC2:
 $ ansible-playbook -i ansible_inventory_machinename --private-key=~/.ssh/my-private-key.pem -u ubuntu ./myConfig.yml
 ```
 
-[Ansible doc](http://docs.ansible.com/guide_vagrant.html#running-ansible-manually)
+- [Ansible doc](http://docs.ansible.com/guide_vagrant.html#running-ansible-manually)
 
-That's it! Happy Hubing
+That's it! Happy Hubing ;-)
 
 
 ## Some docs on Hubot and Slack Adapter
@@ -107,7 +107,7 @@ That's it! Happy Hubing
 
 ## Add some script to your Hubot
 
-[Hubot script catalog](https://hubot-script-catalog.herokuapp.com)
+- [Hubot script catalog](https://hubot-script-catalog.herokuapp.com)
 
 ## License
 
