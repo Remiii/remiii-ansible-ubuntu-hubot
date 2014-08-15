@@ -101,9 +101,9 @@ That's it! Happy Hubing
 
 ## Some docs on Hubot and Slack Adapter
 
-[Hubot](https://hubot.github.com)
-[Hubot on GitHub](https://github.com/github/hubot)
-[Hubot Slack Adapter on GitHub](https://github.com/tinyspeck/hubot-slack)
+- [Hubot](https://hubot.github.com)
+- [Hubot on GitHub](https://github.com/github/hubot)
+- [Hubot Slack Adapter on GitHub](https://github.com/tinyspeck/hubot-slack)
 
 ## Add some script to your Hubot
 
