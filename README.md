@@ -16,15 +16,12 @@ This Ansible config for Hubot is just a sample, do not use in production!
 ```
 
 ![Screen shot - Hubot](https://raw.githubusercontent.com/Remiii/remiii-ansible-ubuntu-hubot/master/_documentation/image/hubot-logo.png)<br>
-Hubot.
 
-This Ansible config provide a sample config for your Hubot on Slack... beacause Hubot needs to be shiped on a server.
+This Ansible config provide a sample config for your Hubot on [Slack](https://slack.com)... because Hubot needs to be shipped on a server.
 
 ![Screen shot - Ansible](https://raw.githubusercontent.com/Remiii/remiii-ansible-ubuntu-hubot/master/_documentation/image/image1.png)<br>
-Ansible.
 
 ![Screen shot - Slack](https://raw.githubusercontent.com/Remiii/remiii-ansible-ubuntu-hubot/master/_documentation/image/image2.png)<br>
-Slack.
 
 ## Introduction
 
@@ -36,7 +33,7 @@ Users system:
 
 Mark: sample user `django`.
 
-Off course, you also need a Slack account...
+Off course, you also need a [Slack account](https://slack.com/signin)...
 
 ## Installation
 
@@ -44,7 +41,13 @@ Install Ansible with your package manager (apt, brew...).
 
 ## Setup vars
 
-Setup the vars in `vars/myConfig.yml` and add `ansible_inventory_machinename` file.
+
+### Create and update `ansible_inventory_machinename` file
+
+Create the `ansible_inventory_machine` file from the `.dist` file
+```sh
+$ cp ansible_inventory_machinename.dist ansible_inventory_machinename.dist
+```
 
 For exemple (is just a sample):
 ```
@@ -52,11 +55,14 @@ For exemple (is just a sample):
 machine ansible_ssh_host='127.0.0.1' ansible_ssh_port=10022
 ```
 
-Copy the config dist file `vars/myConfig.yml.dist`
+### Create and update `vars/myConfig.yml` file from the `.dist` file
+
+Create the `vars/myConfig.yml` file
 ```sh
 $ cp vars/myConfig.yml.dist vars/myConfig.yml
 ```
 
+For exemple (is just a sample):
 ```
 # pathToTheProject/vars/myConfig.yml
     ...
@@ -66,17 +72,17 @@ $ cp vars/myConfig.yml.dist vars/myConfig.yml
     ...
 ```
 
-## Add vars files
+### Add your public key
 
 Add the folowing files in the `vars` directory:
 
 - mySSHPublicKey.pub
 
-... TBD
 
-## Run
 
-* Ansible
+## Run Ansible
+
+Run Ansible
 
 ```sh
 $ ansible-playbook -i ansible_inventory_machinename --private-key=~/.ssh/myFuckingPrivateKey.pem -u yourDefaultUser ./myConfig.yml
@@ -84,20 +90,19 @@ $ ansible-playbook -i ansible_inventory_machinename --private-key=~/.ssh/myFucki
 
 Sample command line for Vagrant:
 
-```
+```sh
 $ ansible-playbook -i ansible_inventory_machinename --private-key=~/.vagrant.d/insecure_private_key -u vagrant ./myConfig.yml
 ```
 
 Sample command line for AmazonEC2:
 
-```
+```sh
 $ ansible-playbook -i ansible_inventory_machinename --private-key=~/.ssh/my-private-key.pem -u ubuntu ./myConfig.yml
 ```
 
 - [Ansible doc](http://docs.ansible.com/guide_vagrant.html#running-ansible-manually)
 
-That's it! Happy Hubing ;-)
-
+## That's it! Happy Hubing ;-)
 
 ## Some docs on Hubot and Slack Adapter
 
