@@ -17,7 +17,7 @@ This Ansible config for Hubot is just a sample, do not use in production!
 
 ![Screen shot - Hubot](https://raw.githubusercontent.com/Remiii/remiii-ansible-ubuntu-hubot/master/_documentation/image/hubot-logo.png)<br>
 
-This Ansible config provide a sample config for your Hubot on [Slack](https://slack.com)... because Hubot needs to be shipped on a server.
+This Ansible config provide a sample config for your Hubot on [Slack](https://slack.com)... because Hubot needs to be shipped on a server. :facepunch:
 
 ![Screen shot - Ansible](https://raw.githubusercontent.com/Remiii/remiii-ansible-ubuntu-hubot/master/_documentation/image/image1.png)<br>
 
@@ -46,7 +46,7 @@ Install Ansible with your package manager (apt, brew...).
 
 Create the `ansible_inventory_machine` file from the `.dist` file
 ```sh
-$ cp ansible_inventory_machinename.dist ansible_inventory_machinename.dist
+$ cp ansible_inventory_machinename.dist ansible_inventory_machinename
 ```
 
 For exemple (is just a sample):
