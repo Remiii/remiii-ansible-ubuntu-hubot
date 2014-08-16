@@ -110,7 +110,7 @@ $ ansible-playbook -i ansible_inventory_machinename --private-key=~/.ssh/my-priv
 - [Hubot on GitHub](https://github.com/github/hubot)
 - [Hubot Slack Adapter on GitHub](https://github.com/tinyspeck/hubot-slack)
 
-## Add some script to your Hubot
+## Add some scripts to your Hubot
 
 - [Hubot script catalog](https://hubot-script-catalog.herokuapp.com)
 
