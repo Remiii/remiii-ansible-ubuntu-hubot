@@ -102,6 +102,15 @@ $ ansible-playbook -i ansible_inventory_machinename --private-key=~/.ssh/my-priv
 
 - [Ansible doc](http://docs.ansible.com/guide_vagrant.html#running-ansible-manually)
 
+## Server Firewall config
+
+If you have a firewall on the top of your server you need to open the `8080` port in Inbound.
+
+Sample on AWS.
+![Screen shot - AWS Security](https://raw.githubusercontent.com/Remiii/remiii-ansible-ubuntu-hubot/master/_documentation/image/aws-security-1.png)<br>
+
+
+
 ## That's it! Happy Hubing ;-)
 
 ## Some docs on Hubot and Slack Adapter
