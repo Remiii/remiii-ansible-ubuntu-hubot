@@ -266,6 +266,7 @@
       template: src={{ rootPath }}/skel/home/myuser/documents/myhubot/hubot-scripts.json.j2 dest=/home/{{ user }}/documents/myhubot/hubot-scripts.json owner={{ user }} group={{ user }}
       sudo: true
 
+
     ###
     # Update supervisor Hubot
     ###
