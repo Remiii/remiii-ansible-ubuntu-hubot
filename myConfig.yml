@@ -51,6 +51,9 @@
     - name: Start the ntp service
       service: name=ntp state=started enabled=true
       sudo: true
+    - name: Update time
+      command: dpkg-reconfigure --frontend noninteractive tzdata
+      sudo: true
 
 
     ###
@@ -141,9 +144,9 @@
       with_items:
         - fail2ban
       sudo: true
-    - name: Disable Root login (useless on Ubuntu but just in case ;-)
-      lineinfile: dest=/etc/ssh/sshd_config regexp='^PermitRootLogin' line='PermitRootLogin no' backup=yes
-      sudo: true
+    #- name: Disable Root login (useless on Ubuntu but just in case ;-)
+    #  lineinfile: dest=/etc/ssh/sshd_config regexp='^PermitRootLogin' line='PermitRootLogin no' backup=yes
+    #  sudo: true
     - name: Some security optim
       lineinfile: dest=/etc/ssh/sshd_config line="Match User {{ user }}" backup=yes
       sudo: true
